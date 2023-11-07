@@ -43,4 +43,9 @@ const String tResetViaPhone = "Verificação de Celular";
 
 const String tNext = "Proximo";
 
+const String tOtpTitle = "COD\nIGO";
+const String tOtpSubtitle = "De Verificação";
+const String tOtpMessage = "Digite o código de verificação enviado em ";
+
+
 
