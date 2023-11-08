@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "55763303614",
+    "project_id": "flutterbarbeariaagendamentos",
+    "storage_bucket": "flutterbarbeariaagendamentos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:55763303614:android:7ad6c4648c2ac4f41872ef",
+        "android_client_info": {
+          "package_name": "com.example.agendfael"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "55763303614-fs0q8faa41vlm1bbg714qfuk4n2dvqa0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD31NKqheOI7I8zMOl5-QiueNFcfRkp1ew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "55763303614-fs0q8faa41vlm1bbg714qfuk4n2dvqa0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "55763303614-7e54os9hmt0qah7et5oeeame07af2u4j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.agendfael"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

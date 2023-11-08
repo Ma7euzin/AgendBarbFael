@@ -27,7 +27,7 @@ class OTPScreen extends StatelessWidget {
             const SizedBox(
               height: 40.0,
             ),
-            Text(
+            const Text(
               "${tOtpMessage}support@codingwitht.com",
               textAlign: TextAlign.center,
             ),
@@ -38,12 +38,19 @@ class OTPScreen extends StatelessWidget {
               numberOfFields: 6,
               fillColor: Colors.black.withOpacity(0.1),
               filled: true,
-              onSubmit: (code){print("OTP é => $code");},
+              onSubmit: (code) {
+                print("OTP é => $code");
+              },
             ),
-            const SizedBox(height: 20.2,),
+            const SizedBox(
+              height: 20.2,
+            ),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(onPressed: (){}, child: const Text(tNext),),
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text(tNext),
+              ),
             ),
           ],
         ),

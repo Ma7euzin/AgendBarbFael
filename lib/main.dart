@@ -1,9 +1,17 @@
+import 'package:agendfael/firebase_options.dart';
 import 'package:agendfael/src/features/authentication/screens/splash_screen/splash_screen.dart';
+import 'package:agendfael/src/repository/authentication_repository/authentication_repository.dart';
 import 'package:agendfael/src/utils/theme/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-void main() => runApp(const App());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)
+  .then((value) => Get.put(AutheticationRepository()));
+  runApp(const App());
+} 
 
 class App extends StatelessWidget {
   const App({super.key});
