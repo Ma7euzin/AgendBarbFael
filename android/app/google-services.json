@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "55763303614-0t19qumlhvvcmf7ejgraeaiqgbnmkv0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.agendfael",
+            "certificate_hash": "eb3a748fd99ce1d2adfbbaa2065481c7636bbee5"
+          }
+        },
+        {
           "client_id": "55763303614-fs0q8faa41vlm1bbg714qfuk4n2dvqa0.apps.googleusercontent.com",
           "client_type": 3
         }

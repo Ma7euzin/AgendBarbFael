@@ -67,6 +67,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '55763303614',
     projectId: 'flutterbarbeariaagendamentos',
     storageBucket: 'flutterbarbeariaagendamentos.appspot.com',
+    androidClientId: '55763303614-0t19qumlhvvcmf7ejgraeaiqgbnmkv0g.apps.googleusercontent.com',
     iosClientId: '55763303614-7e54os9hmt0qah7et5oeeame07af2u4j.apps.googleusercontent.com',
     iosBundleId: 'com.example.agendfael',
   );
@@ -77,6 +78,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '55763303614',
     projectId: 'flutterbarbeariaagendamentos',
     storageBucket: 'flutterbarbeariaagendamentos.appspot.com',
+    androidClientId: '55763303614-0t19qumlhvvcmf7ejgraeaiqgbnmkv0g.apps.googleusercontent.com',
     iosClientId: '55763303614-agi9u34og6dte80ntp7bj2996902i452.apps.googleusercontent.com',
     iosBundleId: 'com.example.agendfael.RunnerTests',
   );
