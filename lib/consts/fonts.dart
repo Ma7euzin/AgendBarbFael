@@ -8,11 +8,11 @@ class AppSizes{
 }
 
 class AppStyles{
-  static normal({required String title, Color color = Colors.black, double? size, TextAlign alignment = TextAlign.left}){
+  static normal({required String title, Color color = Colors.black54, double? size, TextAlign alignment = TextAlign.left}){
     return title.text.size(size).color(color).align(alignment).make();
   }
 
-  static bold({required String title, Color color = Colors.black, double? size,TextAlign alignment = TextAlign.left}){
+  static bold({required String title, Color color = Colors.black,double? size = AppSizes.size16,TextAlign alignment = TextAlign.left}){
     return title.text.size(size).color(color).fontFamily(GoogleFonts.nunito.toString()).align(alignment).make();
   }
 }

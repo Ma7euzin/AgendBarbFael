@@ -1,6 +1,8 @@
 import 'package:agendfael/consts/consts.dart';
 import 'package:agendfael/res/components/custom_buttom.dart';
+import 'package:agendfael/views/book_appointment_view/book_appointment_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class BarberProfileView extends StatelessWidget {
   const BarberProfileView({super.key});
@@ -148,7 +150,9 @@ class BarberProfileView extends StatelessWidget {
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(10.0),
         child: CustomButtom(
-          onTap: () {},
+          onTap: () {
+            Get.to(()=> const BookAppointmentView());
+          },
           buttonText: "Agendar um Horario",
         ),
       ),

@@ -1,5 +1,8 @@
 import 'package:agendfael/consts/list.dart';
+import 'package:agendfael/controller/auth_cotroller.dart';
+import 'package:agendfael/views/login_view/login_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../consts/consts.dart';
 
@@ -34,10 +37,17 @@ class SettingsView extends StatelessWidget {
             children: List.generate(
               settingsList.length,
               (index) => ListTile(
-                onTap: () {},
-                leading: Icon(settingsListIcon[index], color: AppColors.primaryColor,),
+                onTap: () async{
+                  if (index == 2) {
+                    AuthController().signout();
+                    Get.offAll(() => const LoginView());
+                  }
+                },
+                leading: Icon(
+                  settingsListIcon[index],
+                  color: AppColors.primaryColor,
+                ),
                 title: AppStyles.bold(
-                  
                   title: settingsList[index],
                 ),
               ),

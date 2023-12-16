@@ -2,6 +2,7 @@ import 'package:agendfael/consts/colors.dart';
 import 'package:agendfael/consts/consts.dart';
 import 'package:agendfael/consts/list.dart';
 import 'package:agendfael/views/barber_profile_view/barber_profile_view.dart';
+import 'package:agendfael/views/category_details_view/category_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -126,7 +127,9 @@ class HomeView extends StatelessWidget {
                 ),
                 5.heightBox,
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Get.to(() => const CategoryDetailsView());
+                  },
                   child: Align(
                     alignment: Alignment.centerRight,
                     child: AppStyles.normal(

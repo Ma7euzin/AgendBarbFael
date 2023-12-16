@@ -1,4 +1,5 @@
 import 'package:agendfael/consts/consts.dart';
+import 'package:agendfael/views/appointment_view/appointment_view.dart';
 import 'package:agendfael/views/barber_profile_view/barber_profile_view.dart';
 import 'package:agendfael/views/category_view/category_view.dart';
 import 'package:agendfael/views/home_view/home_view.dart';
@@ -18,6 +19,7 @@ class _HomeState extends State<Home> {
   int selectedIndex = 0;
   List screenList = [
     const HomeView(),
+    const AppointmentView(),
     const CategoryView(),
     const LoginView(),
     const SettingsView(),
@@ -50,6 +52,10 @@ class _HomeState extends State<Home> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: "Agendamentos",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.category),

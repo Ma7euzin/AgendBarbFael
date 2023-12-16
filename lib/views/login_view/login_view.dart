@@ -1,3 +1,4 @@
+import 'package:agendfael/controller/auth_cotroller.dart';
 import 'package:agendfael/res/components/custom_buttom.dart';
 import 'package:agendfael/res/components/custom_textfield.dart';
 import 'package:agendfael/views/home_view/home.dart';
@@ -7,11 +8,25 @@ import 'package:get/get.dart';
 
 import '../../consts/consts.dart';
 
-class LoginView extends StatelessWidget {
+class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
+  State<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends State<LoginView> {
+  var isLoading = true;
+
+  @override
+  void initState() {
+    AuthController().isUserAlreadyLoggedIn();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var controller = Get.put(AuthController());
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(8),
@@ -42,10 +57,12 @@ class LoginView extends StatelessWidget {
                     //widgets de customText que foi criado
                     CustomTextField(
                       hint: AppStrings.email,
+                      textControlller: controller.emailController,
                     ),
                     10.heightBox,
                     CustomTextField(
                       hint: AppStrings.password,
+                      textControlller: controller.passwordController,
                     ),
                     20.heightBox,
                     Align(
@@ -55,8 +72,11 @@ class LoginView extends StatelessWidget {
                     20.heightBox,
                     //widget do botão que foi criado
                     CustomButtom(
-                      onTap: () {
-                        Get.to(()=>const Home());
+                      onTap: () async{
+                        await controller.loginUser();
+                        if(controller.userCredential != null){
+                          Get.to(() => const Home());
+                        }
                       },
                       buttonText: AppStrings.login,
                     ),
