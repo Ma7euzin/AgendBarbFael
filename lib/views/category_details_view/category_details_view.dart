@@ -1,7 +1,4 @@
-import 'package:get/get.dart';
-
 import '../../consts/consts.dart';
-import '../barber_profile_view/barber_profile_view.dart';
 
 class CategoryDetailsView extends StatelessWidget {
   const CategoryDetailsView({super.key});
@@ -20,8 +17,8 @@ class CategoryDetailsView extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: GestureDetector(
-          onTap: (){
-            Get.to(() => const BarberProfileView());
+          onTap: () {
+            //Get.to(() => const BarberProfileView());
           },
           child: GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -56,13 +53,12 @@ class CategoryDetailsView extends StatelessWidget {
                     5.heightBox,
                     AppStyles.normal(title: "Nome Do Barbeiro"),
                     VxRating(
-                      selectionColor:  AppColors.yellowColor,
+                      selectionColor: AppColors.yellowColor,
                       onRatingUpdate: (value) {},
                       maxRating: 5,
                       count: 5,
                       value: 4,
                       stepInt: true,
-        
                     ),
                   ],
                 ),

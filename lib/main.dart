@@ -1,4 +1,5 @@
 import 'package:agendfael/firebase_options.dart';
+import 'package:agendfael/res/components/waiting_screen.dart';
 import 'package:agendfael/views/login_view/login_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class App extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       defaultTransition: Transition.leftToRightWithFade,
       transitionDuration: Duration(milliseconds: 500),
-      home: LoginView()
+      home: WaitingScreen(),
     );
   }
 }

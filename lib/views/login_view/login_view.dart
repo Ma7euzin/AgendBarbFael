@@ -16,13 +16,6 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  var isLoading = true;
-
-  @override
-  void initState() {
-    AuthController().isUserAlreadyLoggedIn();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../consts/consts.dart';
 
 class AppointmentDetailsView extends StatelessWidget {
-  const AppointmentDetailsView({super.key});
+  final DocumentSnapshot doc;
+  const AppointmentDetailsView({super.key, required this.doc});
 
   @override
   Widget build(BuildContext context) {

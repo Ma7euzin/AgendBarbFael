@@ -1,11 +1,10 @@
 import 'package:agendfael/consts/consts.dart';
 import 'package:agendfael/views/appointment_view/appointment_view.dart';
-import 'package:agendfael/views/barber_profile_view/barber_profile_view.dart';
+
 import 'package:agendfael/views/category_view/category_view.dart';
 import 'package:agendfael/views/home_view/home_view.dart';
 import 'package:agendfael/views/login_view/login_view.dart';
 import 'package:agendfael/views/settings_view/settings_view.dart';
-import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -15,7 +14,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   int selectedIndex = 0;
   List screenList = [
     const HomeView(),
@@ -24,7 +22,6 @@ class _HomeState extends State<Home> {
     const LoginView(),
     const SettingsView(),
   ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +40,7 @@ class _HomeState extends State<Home> {
           color: AppColors.whiteColor,
         ),
         type: BottomNavigationBarType.fixed,
-        onTap: (value){
+        onTap: (value) {
           setState(() {
             selectedIndex = value;
           });

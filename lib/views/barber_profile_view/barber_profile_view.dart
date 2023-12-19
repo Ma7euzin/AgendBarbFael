@@ -1,19 +1,23 @@
 import 'package:agendfael/consts/consts.dart';
 import 'package:agendfael/res/components/custom_buttom.dart';
 import 'package:agendfael/views/book_appointment_view/book_appointment_view.dart';
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 class BarberProfileView extends StatelessWidget {
-  const BarberProfileView({super.key});
+  final DocumentSnapshot barb;
+  const BarberProfileView({super.key, required this.barb});
 
   @override
   Widget build(BuildContext context) {
+
+    
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryColor,
         title: AppStyles.bold(
-          title: "Nome do Barbeiro",
+          title: "Detalhes do Barbeiro",
           color: AppColors.whiteColor,
           size: AppSizes.size16,
         ),
@@ -43,11 +47,11 @@ class BarberProfileView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           AppStyles.bold(
-                              title: "Nome Barbeiro",
+                              title: barb['barbName'],
                               color: AppColors.whiteColor,
                               size: AppSizes.size16),
                           AppStyles.bold(
-                            title: "Experiência",
+                            title: barb['barbCategory'],
                             color: AppColors.whiteColor.withOpacity(0.5),
                             size: AppSizes.size12,
                           ),
@@ -57,7 +61,7 @@ class BarberProfileView extends StatelessWidget {
                             onRatingUpdate: (value) {},
                             maxRating: 5,
                             count: 5,
-                            value: 4,
+                            value: double.parse(barb['barbNivel'].toString()),
                             stepInt: true,
                           ),
                         ],
@@ -85,7 +89,7 @@ class BarberProfileView extends StatelessWidget {
                           title: "Numero Telefone",
                           color: AppColors.whiteColor),
                       subtitle: AppStyles.normal(
-                          title: "+5531992045632",
+                          title: barb['barbPhone'],
                           color: AppColors.whiteColor.withOpacity(0.5),
                           size: AppSizes.size14),
                       trailing: Container(
@@ -102,12 +106,12 @@ class BarberProfileView extends StatelessWidget {
                     ),
                     10.heightBox,
                     AppStyles.bold(
-                        title: "Sobre",
+                        title: "Sobre:",
                         color: AppColors.whiteColor,
                         size: AppSizes.size16),
                     5.heightBox,
                     AppStyles.normal(
-                        title: "isso é a seção sobre o barbeiro",
+                        title: barb['barbAbout'],
                         color: AppColors.whiteColor.withOpacity(0.5),
                         size: AppSizes.size14),
                     10.heightBox,
@@ -117,17 +121,17 @@ class BarberProfileView extends StatelessWidget {
                         size: AppSizes.size16),
                     5.heightBox,
                     AppStyles.normal(
-                        title: "Endereço do barbeiro",
+                        title: barb['barbAddress'],
                         color: AppColors.whiteColor.withOpacity(0.5),
                         size: AppSizes.size14),
                     10.heightBox,
                     AppStyles.bold(
-                        title: "Tempo de Trabalho",
+                        title: "Horario de Trabalho",
                         color: AppColors.whiteColor,
                         size: AppSizes.size16),
                     5.heightBox,
                     AppStyles.normal(
-                        title: "9:00 AM até 19: PM",
+                        title: barb['BarbTiming'],
                         color: AppColors.whiteColor.withOpacity(0.5),
                         size: AppSizes.size14),
                     10.heightBox,
@@ -137,7 +141,7 @@ class BarberProfileView extends StatelessWidget {
                         size: AppSizes.size16),
                     5.heightBox,
                     AppStyles.normal(
-                        title: "Aqui é a experiencia do barbeiro",
+                        title: barb['barbExperiencia'],
                         color: AppColors.whiteColor.withOpacity(0.5),
                         size: AppSizes.size14),
                   ],
@@ -151,7 +155,7 @@ class BarberProfileView extends StatelessWidget {
         padding: const EdgeInsets.all(10.0),
         child: CustomButtom(
           onTap: () {
-            Get.to(()=> const BookAppointmentView());
+            Get.to(()=> BookAppointmentView(barbId: barb.id,barbName: barb['barbName'],));
           },
           buttonText: "Agendar um Horario",
         ),
