@@ -1,7 +1,6 @@
 import 'package:agendfael/consts/list.dart';
 import 'package:agendfael/views/category_details_view/category_details_view.dart';
 import 'package:get/get.dart';
-
 import '../../consts/consts.dart';
 
 class CategoryView extends StatelessWidget {
@@ -33,7 +32,7 @@ class CategoryView extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(
                 onTap: () {
-                  
+                  Get.to(() => CategoryDetailsView(catName: IconTitleList[index]));
                 },
                 child: Container(
                   padding: const EdgeInsets.all(12),

@@ -3,7 +3,7 @@ class AppStrings{
   static String appName = "Barbearia do Fael",
   bestBarber = "O melhor barbeiro\n Aplicativo de agendamento",
   welcomeBack = "Bem vindo de Volta",
-  weAreExcited = "estamos entusiasmados por ter você de volta",
+  weAreExcited = "Escolha aqui qual a sua função na barbearia",
   signupNow = "Cadastre-se agora e comece a explorar tudo o que nosso aplicativo tem a oferecer",
   email = "Email",
   emailHint = "Digite Seu Email...",
@@ -34,7 +34,15 @@ class AppStrings{
   barber = "Barbeiro login",
   changePassword = "Alterar Senha",
   termConditions = "Termo e Condições",
-  signout = "Sair";
+  signout = "Sair",
+  clienteSelecionado = "Cliente",
+  barbeiroSelecionado = "Barbeiro",
+  AdminSelecionado = "Admin",
+  cadastroBarbeiro = "Cadastre seu Barbeiro Admin",
+  fullNameBarbeiro = " Nome Completo do Barbeiro",
+  emailBarbeiro = "Email do Barbeiro",
+  SenhaDoBarbeiro = "Senha Do Barbeiro",
+  signupBarbeiro = "Cadastrar BArbeiro";
 
 
 }

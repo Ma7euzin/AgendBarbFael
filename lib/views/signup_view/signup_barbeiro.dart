@@ -1,19 +1,16 @@
-import 'package:agendfael/controller/auth_cotroller.dart';
-import 'package:agendfael/res/components/custom_buttom.dart';
-import 'package:agendfael/res/components/custom_textfield.dart';
-import 'package:agendfael/views/home_view/home_view.dart';
-
+import 'package:agendfael/views/home_view/home_admin.dart';
 import 'package:get/get.dart';
 
 import '../../consts/consts.dart';
+import '../../controller/auth_cotroller.dart';
+import '../../res/components/custom_buttom.dart';
+import '../../res/components/custom_textfield.dart';
 
-class SignupView extends StatelessWidget {
-  const SignupView({super.key});
+class TelaCadastroBarbeiro extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     var controller = Get.put(AuthController());
-
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.all(8),
@@ -29,7 +26,7 @@ class SignupView extends StatelessWidget {
                   ),
                   10.heightBox,
                   AppStyles.bold(
-                      title: AppStrings.signupNow,
+                      title: AppStrings.cadastroBarbeiro,
                       size: AppSizes.size18,
                       alignment: TextAlign.center),
                 ],
@@ -42,45 +39,32 @@ class SignupView extends StatelessWidget {
                   children: [
                     //widgets de customText que foi criado
                     CustomTextField(
-                      hint: AppStrings.fullName,
+                      hint: AppStrings.fullNameBarbeiro,
                       textControlller: controller.fullnameController,
                     ),
                     10.heightBox,
                     CustomTextField(
-                      hint: AppStrings.email,
+                      hint: AppStrings.emailBarbeiro,
                       textControlller: controller.emailController,
                     ),
                     10.heightBox,
                     CustomTextField(
-                      hint: AppStrings.password,
+                      hint: AppStrings.SenhaDoBarbeiro,
                       textControlller: controller.passwordController,
                     ),
                     20.heightBox,
                     //widget do botão que foi criado
                     CustomButtom(
                       onTap: () async{
-                        await controller.signupUser();
+                        await controller.signupUserBarber();
                         if(controller.userCredential != null){
-                          Get.offAll(() => const HomeView());
+                          Get.offAll(() => TelaAdmin());
                         }
                       },
-                      buttonText: AppStrings.signup,
+                      buttonText: AppStrings.signupBarbeiro,
                     ),
                     20.heightBox,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AppStyles.normal(title: AppStrings.alreadyHaveAccount),
-                        8.widthBox,
-                        GestureDetector(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: AppStyles.bold(
-                              title: AppStrings.login, size: AppSizes.size18),
-                        ),
-                      ],
-                    ),
+                    
                   ],
                 ),
               )),

@@ -29,6 +29,7 @@ class AppointmentController extends GetxController{
       'appMsg': appMessageController.text,
       'appWith': barbId,
       'appWithName': barbName,
+      
 
     });
 

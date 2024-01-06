@@ -9,4 +9,5 @@ class HomeController extends GetxController{
     var barbers = await FirebaseFirestore.instance.collection('barbeiros').get();
     return barbers;
   }
+  
 }
