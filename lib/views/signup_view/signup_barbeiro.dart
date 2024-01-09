@@ -7,6 +7,8 @@ import '../../res/components/custom_buttom.dart';
 import '../../res/components/custom_textfield.dart';
 
 class TelaCadastroBarbeiro extends StatelessWidget {
+  const TelaCadastroBarbeiro({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +51,7 @@ class TelaCadastroBarbeiro extends StatelessWidget {
                     ),
                     10.heightBox,
                     CustomTextField(
-                      hint: AppStrings.SenhaDoBarbeiro,
+                      hint: AppStrings.senhaDoBarbeiro,
                       textControlller: controller.passwordController,
                     ),
                     20.heightBox,

@@ -37,11 +37,11 @@ class AppStrings{
   signout = "Sair",
   clienteSelecionado = "Cliente",
   barbeiroSelecionado = "Barbeiro",
-  AdminSelecionado = "Admin",
+  adminSelecionado = "Admin",
   cadastroBarbeiro = "Cadastre seu Barbeiro Admin",
   fullNameBarbeiro = " Nome Completo do Barbeiro",
   emailBarbeiro = "Email do Barbeiro",
-  SenhaDoBarbeiro = "Senha Do Barbeiro",
+  senhaDoBarbeiro = "Senha Do Barbeiro",
   signupBarbeiro = "Cadastrar BArbeiro";
 
 

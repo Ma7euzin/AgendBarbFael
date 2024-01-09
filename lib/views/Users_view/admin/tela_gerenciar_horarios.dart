@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class TelaGerenciarHorario extends StatefulWidget {
 
-  TelaGerenciarHorario({super.key});
+  const TelaGerenciarHorario({super.key});
 
   @override
   State<TelaGerenciarHorario> createState() => _TelaGerenciarHorarioState();
@@ -57,7 +57,7 @@ class _TelaGerenciarHorarioState extends State<TelaGerenciarHorario> {
         const SnackBar(content: Text('Horários atualizados com sucesso!')),
       );
     }).catchError((error) {
-      print('Erro ao salvar os horários: $error');
+      //print('Erro ao salvar os horários: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Erro ao salvar os horários. Tente novamente.')),
       );
@@ -79,11 +79,11 @@ class _TelaGerenciarHorarioState extends State<TelaGerenciarHorario> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Gerenciar Horário'),
+        title: const Text('Gerenciar Horário'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -111,7 +111,7 @@ class _TelaGerenciarHorarioState extends State<TelaGerenciarHorario> {
               ),
               // Adicione campos para os demais dias
         
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
                   Map<String, Map<String, String>> horarios = {
@@ -158,26 +158,26 @@ class _TelaGerenciarHorarioState extends State<TelaGerenciarHorario> {
       children: <Widget>[
         Text(
           dia,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
         Row(
           children: <Widget>[
             Expanded(
               child: TextField(
                 controller: aberturaController,
-                decoration: InputDecoration(labelText: 'Abertura'),
+                decoration: const InputDecoration(labelText: 'Abertura'),
               ),
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Expanded(
               child: TextField(
                 controller: fechamentoController,
-                decoration: InputDecoration(labelText: 'Fechamento'),
+                decoration: const InputDecoration(labelText: 'Fechamento'),
               ),
             ),
           ],
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
       ],
     );
   }

@@ -1,6 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:agendfael/views/Tela%20de%20clientes/Tela_de_clientes.dart';
 import 'package:agendfael/views/Users_view/admin/tela_de_barbeiros.dart';
+import 'package:agendfael/views/Users_view/admin/tela_gerenciamento_banners.dart';
 import 'package:agendfael/views/Users_view/admin/tela_gerenciar_horarios.dart';
 import 'package:agendfael/views/login_view/login_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,7 +26,7 @@ class TelaAdmin extends StatelessWidget {
     // Isso pode incluir a navegação para uma tela de adicionar barbeiros
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TelaCadastroBarbeiro()),
+      MaterialPageRoute(builder: (context) => const TelaCadastroBarbeiro()),
     );
     // ou a exibição de um modal ou diálogo para adicionar novos barbeiros
   }
@@ -34,15 +36,28 @@ class TelaAdmin extends StatelessWidget {
     // Isso pode incluir a navegação para uma tela de adicionar barbeiros
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TelaGerenciarHorario()),
+      MaterialPageRoute(builder: (context) => const TelaGerenciarHorario()),
     );
     // ou a exibição de um modal ou diálogo para adicionar novos barbeiros
+  }
+  void verClientes(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const TelaClientes()),
+    );
   }
 
   void verBarbeiros(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TelaListaBarbeiros()),
+      MaterialPageRoute(builder: (context) => const TelaListaBarbeiros()),
+    );
+  }
+
+  void gerenciarBanners(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AdicionarBanner()),
     );
   }
 
@@ -80,8 +95,18 @@ class TelaAdmin extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               ElevatedButton(
+                onPressed: () => verClientes(context),
+                child: const Text('Ver Todos Clientes'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
                 onPressed: () => horarioBarbearia(context),
                 child: const Text('Gerenciar Horario de Funcionamento'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () => gerenciarBanners(context),
+                child: const Text('Gerenciar Banners da barbearia'),
               ),
             ],
           ),

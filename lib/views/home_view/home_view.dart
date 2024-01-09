@@ -2,9 +2,7 @@
 
 import 'package:agendfael/consts/consts.dart';
 import 'package:agendfael/consts/list.dart';
-import 'package:agendfael/controller/home_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 
 import '../login_view/login_view.dart';
 
@@ -24,7 +22,7 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var controller = Get.put(HomeController());
+    //var controller = Get.put(HomeController());
     
     
     return Scaffold(

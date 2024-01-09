@@ -48,6 +48,8 @@ dependencies:
   flutter_svg: ^2.0.9
   cloud_firestore: ^4.13.6
   shared_preferences: ^2.2.2
+  image_picker: ^1.0.7
+  firebase_storage: ^11.6.0
   
 
   

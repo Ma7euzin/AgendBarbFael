@@ -65,7 +65,7 @@ class _LoginViewState extends State<LoginView> {
         if (controller.userCredential != null) {
           Get.to(() => const HomeView());
         }
-        print('Login como Cliente');
+        //print('Login como Cliente');
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Não há nenhum cliente com essa Conta')),
@@ -85,20 +85,22 @@ class _LoginViewState extends State<LoginView> {
         if (controller.userCredential != null) {
           Get.to(() => HomeBarbeiro());
         }
-        print('Login como Cliente');
+        //print('Login como Cliente');
         }else{
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Não há nenhum Barbeiro com essa Conta')),
           );
         }
-        print('Login como Barbeiro');
+        //print('Login como Barbeiro');
       }
       // Navegação para a tela de barbeiros
       else {
         // Nenhum tipo selecionado
-        print('Selecione um tipo de usuário');
+        //print('Selecione um tipo de usuário');
       }
-    } catch (e) {}
+    } catch (e) {
+      //
+    }
   }
 
   void signup() {
@@ -132,7 +134,7 @@ class _LoginViewState extends State<LoginView> {
       );
     } else {
       // Nenhum tipo selecionado
-      print('Selecione um tipo de usuário');
+      
     }
   }
 
@@ -203,7 +205,7 @@ class _LoginViewState extends State<LoginView> {
                           },
                         ),
                         Text(
-                          AppStrings.AdminSelecionado,
+                          AppStrings.adminSelecionado,
                         ),
                         const SizedBox(
                           height: 1,
