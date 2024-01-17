@@ -1,11 +1,12 @@
 import 'package:agendfael/controller/auth_cotroller.dart';
 import 'package:agendfael/res/components/custom_buttom.dart';
 import 'package:agendfael/res/components/custom_textfield.dart';
-import 'package:agendfael/views/home_view/home_view.dart';
+import 'package:agendfael/views/Users_view/clientes/Tela_Lista_servicos.dart';
 
 import 'package:get/get.dart';
 
 import '../../consts/consts.dart';
+import '../home_view/home_cliente.dart';
 
 class SignupView extends StatelessWidget {
   const SignupView({super.key});

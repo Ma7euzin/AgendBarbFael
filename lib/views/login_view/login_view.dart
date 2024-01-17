@@ -6,7 +6,8 @@ import 'package:agendfael/res/components/custom_textfield.dart';
 
 import 'package:agendfael/views/home_view/home_admin.dart';
 import 'package:agendfael/views/home_view/home_barbeiro.dart';
-import 'package:agendfael/views/home_view/home_view.dart';
+import 'package:agendfael/views/Users_view/clientes/Tela_Lista_servicos.dart';
+import 'package:agendfael/views/home_view/home_cliente.dart';
 import 'package:agendfael/views/signup_view/signup_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 

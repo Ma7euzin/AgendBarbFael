@@ -1,6 +1,6 @@
 // ignore_for_file: unrelated_type_equality_checks, unused_local_variable
 
-import 'package:agendfael/views/home_view/home_view.dart';
+import 'package:agendfael/views/Users_view/clientes/Tela_Lista_servicos.dart';
 import 'package:agendfael/views/login_view/login_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../views/home_view/home_admin.dart';
 import '../../views/home_view/home_barbeiro.dart';
+import '../../views/home_view/home_cliente.dart';
 
 class WaitingScreen extends StatefulWidget {
   const WaitingScreen({super.key});
