@@ -327,35 +327,28 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
                 return horaA.compareTo(horaB);
               });
 
-        if (widget.duracaoTotal > 0 && _horarioSelecionado != null) {
-          DateTime horaEscolhida =
-              DateFormat.Hm().parse(_horarioSelecionado!);
+        if (horariosDoDia.isNotEmpty) {
+        for (int i = 1; i < horariosDoDia.length; i++) {
+          String horaAtual = horariosDoDia[i];
+          String horaAnterior = horariosDoDia[i - 1];
 
-          // Filtrar os horários que são mais cedo que a hora escolhida
-          horariosDoDia = horariosDoDia.where((hora) {
-            DateTime horaAtual = DateFormat.Hm().parse(hora);
-            bool isAnterior = horaAtual.isBefore(horaEscolhida);
+          bool horarioAtualPendente =
+              horariosDoDiaMap[horaAtual]['pendente'] == true;
 
-            if (isAnterior) {
-              String horarioPosterior = horariosDoDia.firstWhere(
-                  (h) => DateFormat.Hm().parse(h).isAfter(horaEscolhida));
+          // Verificar intervalo com horário anterior
+          DateTime horaAtualDt = DateFormat.Hm().parse(horaAtual);
+          DateTime horaAnteriorDt = DateFormat.Hm().parse(horaAnterior);
 
-              bool pendentePosterior =
-                  horariosDoDiaMap[horarioPosterior]['pendente'] ?? false;
-              DateTime horaPosterior =
-                  DateFormat.Hm().parse(horarioPosterior);
+          bool intervaloMenorQueDuracaoTotal =
+              horaAtualDt.difference(horaAnteriorDt).inMinutes < widget.duracaoTotal;
 
-              Duration intervalo = horaPosterior.difference(horaAtual);
-
-              // Remover horário se o posterior tiver pendente true e
-              // o intervalo for menor ou igual a duracaoTotal
-              return !(pendentePosterior &&
-                  intervalo.inMinutes < widget.duracaoTotal);
-            }
-
-            return true;
-          }).toList();
+          if (horarioAtualPendente && intervaloMenorQueDuracaoTotal) {
+            // Remover horário anterior se o atual tiver pendente true e
+            // o intervalo for menor que a duracaoTotal
+            horariosDoDia.removeAt(i - 1);
+          }
         }
+      }
 
         return horariosDoDia;
       }
