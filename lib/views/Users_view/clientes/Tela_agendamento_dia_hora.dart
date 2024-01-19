@@ -1,6 +1,8 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, use_build_context_synchronously
 
+import 'package:agendfael/views/Users_view/clientes/tela_sucesso.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -164,7 +166,6 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.done) {
                                   bool horarioPendente = snapshot.data ?? false;
-                                  
 
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
@@ -219,6 +220,7 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
                             // Lógica de agendamento
                             // Implemente o que deseja fazer quando o botão é pressionado
                             // Por exemplo, abrir uma nova tela de confirmação ou realizar o agendamento diretamente
+                            agendarHorario();
                             print("Agendamento para $_horarioSelecionado");
                           },
                     child: Text('Agendar para $_horarioSelecionado'),
@@ -269,95 +271,203 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
   }
 
   //Obter estatus do horario Selecionado
-  Future<bool> _obterStatusPendente(String dataFormatada, String horario) async {
-  try {
-    CollectionReference horarioCollection =
-        FirebaseFirestore.instance.collection('horario');
+  Future<bool> _obterStatusPendente(
+      String dataFormatada, String horario) async {
+    try {
+      CollectionReference horarioCollection =
+          FirebaseFirestore.instance.collection('horario');
 
-    DocumentReference userDocument =
-        horarioCollection.doc(widget.barbeiroSelecionado.id);
+      DocumentReference userDocument =
+          horarioCollection.doc(widget.barbeiroSelecionado.id);
 
-    DocumentSnapshot<Map<String, dynamic>> snapshot =
-        await userDocument.get() as DocumentSnapshot<Map<String, dynamic>>;
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await userDocument.get() as DocumentSnapshot<Map<String, dynamic>>;
 
-    if (snapshot.exists) {
-      Map<String, dynamic>? userData =
-          (snapshot.data() as Map<String, dynamic>?) ?? {};
+      if (snapshot.exists) {
+        Map<String, dynamic>? userData =
+            (snapshot.data() as Map<String, dynamic>?) ?? {};
 
-      if (userData.containsKey(dataFormatada)) {
-        Map<String, dynamic> horariosDoDiaMap =
-            userData[dataFormatada] as Map<String, dynamic>;
+        if (userData.containsKey(dataFormatada)) {
+          Map<String, dynamic> horariosDoDiaMap =
+              userData[dataFormatada] as Map<String, dynamic>;
 
-        if (horariosDoDiaMap.containsKey(horario)) {
-          return horariosDoDiaMap[horario]['pendente'] == true;
-        }
-      }
-    }
-  } catch (error) {
-    print("Erro ao obter status pendente: $error");
-  }
-
-  return false;
-}
-
-  Future<List<String>> obterHorariosDoDia(DateTime data) async {
-  try {
-    CollectionReference horarioCollection =
-        FirebaseFirestore.instance.collection('horario');
-
-    DocumentReference userDocument =
-        horarioCollection.doc(widget.barbeiroSelecionado.id);
-
-    DocumentSnapshot<Map<String, dynamic>> snapshot =
-        await userDocument.get() as DocumentSnapshot<Map<String, dynamic>>;
-
-    if (snapshot.exists) {
-      Map<String, dynamic> userData = snapshot.data() ?? {};
-      String dataFormatada = DateFormat('yyyy-MM-dd').format(data);
-
-      if (userData.containsKey(dataFormatada)) {
-        Map<String, dynamic> horariosDoDiaMap =
-            userData[dataFormatada] as Map<String, dynamic>;
-
-        List<String> horariosDoDia =
-            horariosDoDiaMap.keys.map((hora) => hora.toString()).toList()
-              ..sort((a, b) {
-                DateTime horaA = DateFormat.Hm().parse(a);
-                DateTime horaB = DateFormat.Hm().parse(b);
-                return horaA.compareTo(horaB);
-              });
-
-        if (horariosDoDia.isNotEmpty) {
-        for (int i = 1; i < horariosDoDia.length; i++) {
-          String horaAtual = horariosDoDia[i];
-          String horaAnterior = horariosDoDia[i - 1];
-
-          bool horarioAtualPendente =
-              horariosDoDiaMap[horaAtual]['pendente'] == true;
-
-          // Verificar intervalo com horário anterior
-          DateTime horaAtualDt = DateFormat.Hm().parse(horaAtual);
-          DateTime horaAnteriorDt = DateFormat.Hm().parse(horaAnterior);
-
-          bool intervaloMenorQueDuracaoTotal =
-              horaAtualDt.difference(horaAnteriorDt).inMinutes < widget.duracaoTotal;
-
-          if (horarioAtualPendente && intervaloMenorQueDuracaoTotal) {
-            // Remover horário anterior se o atual tiver pendente true e
-            // o intervalo for menor que a duracaoTotal
-            horariosDoDia.removeAt(i - 1);
+          if (horariosDoDiaMap.containsKey(horario)) {
+            return horariosDoDiaMap[horario]['pendente'] == true;
           }
         }
       }
-
-        return horariosDoDia;
-      }
+    } catch (error) {
+      print("Erro ao obter status pendente: $error");
     }
-  } catch (e) {
-    print("Erro ao obter horários do dia: $e");
+
+    return false;
   }
 
-  return [];
+  Future<List<String>> obterHorariosDoDia(DateTime data) async {
+    try {
+      CollectionReference horarioCollection =
+          FirebaseFirestore.instance.collection('horario');
+
+      DocumentReference userDocument =
+          horarioCollection.doc(widget.barbeiroSelecionado.id);
+
+      DocumentSnapshot<Map<String, dynamic>> snapshot =
+          await userDocument.get() as DocumentSnapshot<Map<String, dynamic>>;
+
+      if (snapshot.exists) {
+        Map<String, dynamic> userData = snapshot.data() ?? {};
+        String dataFormatada = DateFormat('yyyy-MM-dd').format(data);
+
+        if (userData.containsKey(dataFormatada)) {
+          Map<String, dynamic> horariosDoDiaMap =
+              userData[dataFormatada] as Map<String, dynamic>;
+
+          List<String> horariosDoDia =
+              horariosDoDiaMap.keys.map((hora) => hora.toString()).toList()
+                ..sort((a, b) {
+                  DateTime horaA = DateFormat.Hm().parse(a);
+                  DateTime horaB = DateFormat.Hm().parse(b);
+                  return horaA.compareTo(horaB);
+                });
+
+          if (horariosDoDia.isNotEmpty) {
+            for (int i = 1; i < horariosDoDia.length; i++) {
+              String horaAtual = horariosDoDia[i];
+              String horaAnterior = horariosDoDia[i - 1];
+
+              bool horarioAtualPendente =
+                  horariosDoDiaMap[horaAtual]['pendente'] == true;
+
+              // Verificar intervalo com horário anterior
+              DateTime horaAtualDt = DateFormat.Hm().parse(horaAtual);
+              DateTime horaAnteriorDt = DateFormat.Hm().parse(horaAnterior);
+
+              bool intervaloMenorQueDuracaoTotal =
+                  horaAtualDt.difference(horaAnteriorDt).inMinutes <
+                      widget.duracaoTotal;
+
+              if (horarioAtualPendente && intervaloMenorQueDuracaoTotal) {
+                // Remover horário anterior se o atual tiver pendente true e
+                // o intervalo for menor que a duracaoTotal
+                horariosDoDia.removeAt(i - 1);
+              }
+            }
+          }
+
+          return horariosDoDia;
+        }
+      }
+    } catch (e) {
+      print("Erro ao obter horários do dia: $e");
+    }
+
+    return [];
+  }
+
+  // Agendar Horario e criar agendamento
+  Future<void> agendarHorario() async {
+    try {
+      CollectionReference agendamentosCollection =
+          FirebaseFirestore.instance.collection('agendamentos');
+      FirebaseAuth auth = FirebaseAuth.instance;
+      User? user = auth.currentUser;
+
+      String usuarioId = user!.uid;
+      String barbeiroId = widget.barbeiroSelecionado.id;
+      String nomeBarbeiro = widget.barbeiroSelecionado['fullname'];
+      String servicosSelecionados = widget.servicosSelecionados.join(', ');
+      String dataFormatada = DateFormat('yyyy-MM-dd').format(_currentDay);
+      String horarioSelecionado = _horarioSelecionado!;
+      int duracaoTotal = widget.duracaoTotal;
+
+      await agendamentosCollection.add({
+        'usuarioId': usuarioId,
+        'barbeiroId': barbeiroId,
+        'nomeBarbeiro': nomeBarbeiro,
+        'servicosSelecionados': servicosSelecionados,
+        'dataAgendamento': dataFormatada,
+        'horarioAgendamento': horarioSelecionado,
+        'confirmado': false, // Inicialmente, o agendamento não está confirmado
+      });
+
+      // Excluir horários no intervalo posterior ao horário selecionado
+      await excluirHorariosNoIntervaloPosterior(
+          barbeiroId, dataFormatada, horarioSelecionado, duracaoTotal);
+
+      // Atualizar status pendente no horário correspondente
+      await atualizarStatusPendente(
+          barbeiroId, dataFormatada, horarioSelecionado);
+
+      // Navegar para a tela de confirmação
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const AppointmentBooked()));
+    } catch (error) {
+      print("Erro ao agendar horário: $error");
+      // Lógica de tratamento de erro, se necessário
+    }
+  }
+
+  Future<void> atualizarStatusPendente(
+      String barbeiroId, String dataFormatada, String horario) async {
+    try {
+      CollectionReference horarioCollection =
+          FirebaseFirestore.instance.collection('horario');
+
+      DocumentReference userDocument = horarioCollection.doc(barbeiroId);
+
+      await userDocument.update({
+        '$dataFormatada.$horario.pendente': true,
+      });
+
+      // Lógica adicional, se necessário
+    } catch (error) {
+      print("Erro ao atualizar status pendente: $error");
+      // Lógica de tratamento de erro, se necessário
+    }
+  }
+
+  Future<void> excluirHorariosNoIntervaloPosterior(
+    String barbeiroId, String dataFormatada, String horario, int duracaoTotal) async {
+  try {
+    CollectionReference horarioCollection =
+        FirebaseFirestore.instance.collection('horario');
+
+    DocumentReference userDocument =
+        horarioCollection.doc(barbeiroId);
+
+    Map<String, dynamic> updateData = {};
+
+    DateTime horaInicio = DateFormat.Hm().parse(horario);
+    DateTime horaFim = horaInicio.add(Duration(minutes: duracaoTotal));
+
+    // Criar um mapa para os horários no intervalo posterior
+    Map<String, bool> horariosNoIntervalo = {};
+
+    // Preencher o mapa com os horários no intervalo
+    while (horaInicio.isBefore(horaFim)) {
+      String horaAtual = DateFormat.Hm().format(horaInicio);
+      horariosNoIntervalo[horaAtual] = true;
+      horaInicio = horaInicio.add(const Duration(minutes: 10)); // Assumindo intervalos de 10 minutos
+    }
+
+    // Atualizar o documento no Firestore
+    Map<String, dynamic>? horariosDoDia = (await userDocument.get()).data() as Map<String, dynamic>?;
+    if (horariosDoDia != null && horariosDoDia.containsKey(dataFormatada)) {
+      // Remover os horários no intervalo posterior ao horário selecionado
+      horariosNoIntervalo.forEach((hora, _) {
+        horariosDoDia[dataFormatada]!.remove(hora);
+      });
+
+      updateData = horariosDoDia;
+    }
+
+    await userDocument.set(updateData);
+
+    // Lógica adicional, se necessário
+  } catch (error) {
+    print("Erro ao excluir horários no intervalo posterior: $error");
+    // Lógica de tratamento de erro, se necessário
+  }
 }
 }
 
