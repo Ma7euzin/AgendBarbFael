@@ -329,30 +329,44 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
                   DateTime horaB = DateFormat.Hm().parse(b);
                   return horaA.compareTo(horaB);
                 });
+          // Remover horários que já passaram do dia e a hora cadastrada
+          horariosDoDia.removeWhere((hora) {
+            DateTime horaDt = DateFormat.Hm().parse(hora);
+            DateTime dataHoraCadastrada = data.add(Duration(
+              hours: horaDt.hour,
+              minutes: horaDt.minute,
+            ));
+
+            return DateTime.now().isAfter(dataHoraCadastrada);
+          });
 
           if (horariosDoDia.isNotEmpty) {
-            for (int i = 1; i < horariosDoDia.length; i++) {
-              String horaAtual = horariosDoDia[i];
-              String horaAnterior = horariosDoDia[i - 1];
+          int i = 1;
+          while (i < horariosDoDia.length) {
+            String horaAtual = horariosDoDia[i];
+            String horaAnterior = horariosDoDia[i - 1];
 
-              bool horarioAtualPendente =
-                  horariosDoDiaMap[horaAtual]['pendente'] == true;
+            bool horarioAtualPendente =
+                horariosDoDiaMap[horaAtual]['pendente'] == true;
 
-              // Verificar intervalo com horário anterior
-              DateTime horaAtualDt = DateFormat.Hm().parse(horaAtual);
-              DateTime horaAnteriorDt = DateFormat.Hm().parse(horaAnterior);
+            // Verificar intervalo com horário anterior
+            DateTime horaAtualDt = DateFormat.Hm().parse(horaAtual);
+            DateTime horaAnteriorDt = DateFormat.Hm().parse(horaAnterior);
 
-              bool intervaloMenorQueDuracaoTotal =
-                  horaAtualDt.difference(horaAnteriorDt).inMinutes <
-                      widget.duracaoTotal;
+            bool intervaloMenorQueDuracaoTotal =
+                horaAtualDt.difference(horaAnteriorDt).inMinutes <
+                    widget.duracaoTotal;
 
-              if (horarioAtualPendente && intervaloMenorQueDuracaoTotal) {
-                // Remover horário anterior se o atual tiver pendente true e
-                // o intervalo for menor que a duracaoTotal
-                horariosDoDia.removeAt(i - 1);
-              }
+            if (horarioAtualPendente && intervaloMenorQueDuracaoTotal) {
+              // Remover horário anterior se o atual tiver pendente true e
+              // o intervalo for menor que a duracaoTotal
+              horariosDoDia.removeAt(i - 1);
+              i = 1; // Reiniciar a verificação desde o início
+            } else {
+              i++; // Passar para o próximo horário
             }
           }
+        }
 
           return horariosDoDia;
         }
@@ -426,49 +440,50 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
     }
   }
 
-  Future<void> excluirHorariosNoIntervaloPosterior(
-    String barbeiroId, String dataFormatada, String horario, int duracaoTotal) async {
-  try {
-    CollectionReference horarioCollection =
-        FirebaseFirestore.instance.collection('horario');
+  Future<void> excluirHorariosNoIntervaloPosterior(String barbeiroId,
+      String dataFormatada, String horario, int duracaoTotal) async {
+    try {
+      CollectionReference horarioCollection =
+          FirebaseFirestore.instance.collection('horario');
 
-    DocumentReference userDocument =
-        horarioCollection.doc(barbeiroId);
+      DocumentReference userDocument = horarioCollection.doc(barbeiroId);
 
-    Map<String, dynamic> updateData = {};
+      Map<String, dynamic> updateData = {};
 
-    DateTime horaInicio = DateFormat.Hm().parse(horario);
-    DateTime horaFim = horaInicio.add(Duration(minutes: duracaoTotal));
+      DateTime horaInicio = DateFormat.Hm().parse(horario);
+      DateTime horaFim = horaInicio.add(Duration(minutes: duracaoTotal));
 
-    // Criar um mapa para os horários no intervalo posterior
-    Map<String, bool> horariosNoIntervalo = {};
+      // Criar um mapa para os horários no intervalo posterior
+      Map<String, bool> horariosNoIntervalo = {};
 
-    // Preencher o mapa com os horários no intervalo
-    while (horaInicio.isBefore(horaFim)) {
-      String horaAtual = DateFormat.Hm().format(horaInicio);
-      horariosNoIntervalo[horaAtual] = true;
-      horaInicio = horaInicio.add(const Duration(minutes: 10)); // Assumindo intervalos de 10 minutos
+      // Preencher o mapa com os horários no intervalo
+      while (horaInicio.isBefore(horaFim)) {
+        String horaAtual = DateFormat.Hm().format(horaInicio);
+        horariosNoIntervalo[horaAtual] = true;
+        horaInicio = horaInicio.add(
+            const Duration(minutes: 10)); // Assumindo intervalos de 10 minutos
+      }
+
+      // Atualizar o documento no Firestore
+      Map<String, dynamic>? horariosDoDia =
+          (await userDocument.get()).data() as Map<String, dynamic>?;
+      if (horariosDoDia != null && horariosDoDia.containsKey(dataFormatada)) {
+        // Remover os horários no intervalo posterior ao horário selecionado
+        horariosNoIntervalo.forEach((hora, _) {
+          horariosDoDia[dataFormatada]!.remove(hora);
+        });
+
+        updateData = horariosDoDia;
+      }
+
+      await userDocument.set(updateData);
+
+      // Lógica adicional, se necessário
+    } catch (error) {
+      print("Erro ao excluir horários no intervalo posterior: $error");
+      // Lógica de tratamento de erro, se necessário
     }
-
-    // Atualizar o documento no Firestore
-    Map<String, dynamic>? horariosDoDia = (await userDocument.get()).data() as Map<String, dynamic>?;
-    if (horariosDoDia != null && horariosDoDia.containsKey(dataFormatada)) {
-      // Remover os horários no intervalo posterior ao horário selecionado
-      horariosNoIntervalo.forEach((hora, _) {
-        horariosDoDia[dataFormatada]!.remove(hora);
-      });
-
-      updateData = horariosDoDia;
-    }
-
-    await userDocument.set(updateData);
-
-    // Lógica adicional, se necessário
-  } catch (error) {
-    print("Erro ao excluir horários no intervalo posterior: $error");
-    // Lógica de tratamento de erro, se necessário
   }
-}
 }
 
 class SemHorariosWidget extends StatelessWidget {
