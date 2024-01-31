@@ -1,33 +1,26 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'package:agendfael/views/Users_view/barber/tela_agendamentos_barb.dart';
-import 'package:agendfael/views/Users_view/barber/tela_horarios.dart';
+import 'package:agendfael/views/Users_view/clientes/viewPrincipal/agendamentos_cliente.dart';
+import 'package:agendfael/views/Users_view/clientes/viewPrincipal/historico_cliente.dart';
+import 'package:agendfael/views/Users_view/clientes/viewPrincipal/homeView_cliente.dart';
 import 'package:agendfael/views/perfil/tela_perfil.dart';
-import 'package:agendfael/views/Users_view/barber/tela_servi%C3%A7os_barb.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../login_view/login_view.dart';
-
-class HomeBarbeiro extends StatefulWidget {
-  const HomeBarbeiro({super.key});
+class ButtomBarClientes extends StatefulWidget {
+  const ButtomBarClientes({super.key});
 
   @override
-  State<HomeBarbeiro> createState() => _HomeBarbeiroState();
+  State<ButtomBarClientes> createState() => _ButtomBarClientesState();
 }
 
-class _HomeBarbeiroState extends State<HomeBarbeiro> {
+class _ButtomBarClientesState extends State<ButtomBarClientes> {
+
   int _selectedIndex = 0;
 
   final List<Widget> _telas = [
-    TelaServicos(),
-    const TelaAgendamento(),
-    const TelaHorarios(),
-    TelaPerfil(),
+    const HomeViewCliente(),
+    const AgendamentoClientes(),
+    const HistoricoCliente(),
+    TelaPerfil()
   ];
-
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +30,7 @@ class _HomeBarbeiroState extends State<HomeBarbeiro> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
-            label: 'Serviços',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calendar_today),
@@ -45,7 +38,7 @@ class _HomeBarbeiroState extends State<HomeBarbeiro> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.schedule),
-            label: 'Horários',
+            label: 'Histórico',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

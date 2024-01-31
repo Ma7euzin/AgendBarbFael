@@ -1,48 +1,65 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:agendfael/views/Users_view/clientes/tela_lista_barbeiros.dart';
-import 'package:agendfael/views/login_view/login_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:agendfael/views/Users_view/clientes/viewPrincipal/agendamentos_cliente.dart';
+import 'package:agendfael/views/Users_view/clientes/viewPrincipal/historico_cliente.dart';
+import 'package:agendfael/views/Users_view/clientes/viewPrincipal/homeView_cliente.dart';
+import 'package:agendfael/views/perfil/tela_perfil.dart';
 import 'package:flutter/material.dart';
 
-import '../Users_view/admin/tela_de_barbeiros.dart';
 
-class HomeView extends StatelessWidget {
+
+class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
   @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+
+   int _selectedIndex = 0;
+
+  final List<Widget> _telas = [
+    const HomeViewCliente(),
+    const AgendamentoClientes(),
+    const HistoricoCliente(),
+    TelaPerfil()
+  ];
+
+  @override
   Widget build(BuildContext context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-
-    void _logout(BuildContext context) async {
-      await _auth.signOut();
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const LoginView()));
-    }
-
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sua Aplicação'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () => _logout(context),
-            icon: const Icon(Icons.logout),
-          )
+      body: _telas[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_today),
+            label: 'Agendamentos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.schedule),
+            label: 'Histórico',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Perfil',
+          ),
         ],
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TelaListaBarbeirosCli(),
-              ),
-            );
-          },
-          child: Text('Agendar Serviço'),
-        ),
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.black,
+        onTap: _onItemTapped,
       ),
     );
+  }
+
+   void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 }

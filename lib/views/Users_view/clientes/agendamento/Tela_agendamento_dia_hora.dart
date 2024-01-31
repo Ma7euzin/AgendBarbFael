@@ -1,6 +1,6 @@
 // ignore_for_file: unused_field, use_build_context_synchronously
 
-import 'package:agendfael/views/Users_view/clientes/tela_sucesso.dart';
+import 'package:agendfael/views/Users_view/clientes/agendamento/tela_sucesso.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -214,6 +214,12 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.black, // Cor de fundo
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50,
+                          vertical: 20), // Ajusta o tamanho do botão
+                    ),
                     onPressed: _horarioPendente
                         ? null
                         : () {
@@ -223,7 +229,13 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
                             agendarHorario();
                             print("Agendamento para $_horarioSelecionado");
                           },
-                    child: Text('Agendar para $_horarioSelecionado'),
+                    child: Text(
+                      'Agendar para $_horarioSelecionado',
+                      style: const TextStyle(
+                        color: Colors.white, // Cor do texto
+                        fontWeight: FontWeight.bold, // Negrito
+                      ),
+                    ),
                   ),
                 ),
             ],
@@ -322,13 +334,15 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
           Map<String, dynamic> horariosDoDiaMap =
               userData[dataFormatada] as Map<String, dynamic>;
 
-          List<String> horariosDoDia =
-              horariosDoDiaMap.keys.map((hora) => hora.toString()).toList()
-                ..sort((a, b) {
-                  DateTime horaA = DateFormat.Hm().parse(a);
-                  DateTime horaB = DateFormat.Hm().parse(b);
-                  return horaA.compareTo(horaB);
-                });
+          List<String> horariosDoDia = horariosDoDiaMap.keys
+              .where((hora) => horariosDoDiaMap[hora]['agendado'] != true)
+              .map((hora) => hora.toString())
+              .toList()
+            ..sort((a, b) {
+              DateTime horaA = DateFormat.Hm().parse(a);
+              DateTime horaB = DateFormat.Hm().parse(b);
+              return horaA.compareTo(horaB);
+            });
           // Remover horários que já passaram do dia e a hora cadastrada
           horariosDoDia.removeWhere((hora) {
             DateTime horaDt = DateFormat.Hm().parse(hora);
@@ -341,32 +355,32 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
           });
 
           if (horariosDoDia.isNotEmpty) {
-          int i = 1;
-          while (i < horariosDoDia.length) {
-            String horaAtual = horariosDoDia[i];
-            String horaAnterior = horariosDoDia[i - 1];
+            int i = 1;
+            while (i < horariosDoDia.length) {
+              String horaAtual = horariosDoDia[i];
+              String horaAnterior = horariosDoDia[i - 1];
 
-            bool horarioAtualPendente =
-                horariosDoDiaMap[horaAtual]['pendente'] == true;
+              bool horarioAtualPendente =
+                  horariosDoDiaMap[horaAtual]['pendente'] == true;
 
-            // Verificar intervalo com horário anterior
-            DateTime horaAtualDt = DateFormat.Hm().parse(horaAtual);
-            DateTime horaAnteriorDt = DateFormat.Hm().parse(horaAnterior);
+              // Verificar intervalo com horário anterior
+              DateTime horaAtualDt = DateFormat.Hm().parse(horaAtual);
+              DateTime horaAnteriorDt = DateFormat.Hm().parse(horaAnterior);
 
-            bool intervaloMenorQueDuracaoTotal =
-                horaAtualDt.difference(horaAnteriorDt).inMinutes <
-                    widget.duracaoTotal;
+              bool intervaloMenorQueDuracaoTotal =
+                  horaAtualDt.difference(horaAnteriorDt).inMinutes <
+                      widget.duracaoTotal;
 
-            if (horarioAtualPendente && intervaloMenorQueDuracaoTotal) {
-              // Remover horário anterior se o atual tiver pendente true e
-              // o intervalo for menor que a duracaoTotal
-              horariosDoDia.removeAt(i - 1);
-              i = 1; // Reiniciar a verificação desde o início
-            } else {
-              i++; // Passar para o próximo horário
+              if (horarioAtualPendente && intervaloMenorQueDuracaoTotal) {
+                // Remover horário anterior se o atual tiver pendente true e
+                // o intervalo for menor que a duracaoTotal
+                horariosDoDia.removeAt(i - 1);
+                i = 1; // Reiniciar a verificação desde o início
+              } else {
+                i++; // Passar para o próximo horário
+              }
             }
           }
-        }
 
           return horariosDoDia;
         }
@@ -402,6 +416,7 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
         'dataAgendamento': dataFormatada,
         'horarioAgendamento': horarioSelecionado,
         'confirmado': false, // Inicialmente, o agendamento não está confirmado
+        'finalizado': false,
       });
 
       // Excluir horários no intervalo posterior ao horário selecionado
@@ -457,20 +472,23 @@ class _AgendDiaHoraState extends State<AgendDiaHora> {
       Map<String, bool> horariosNoIntervalo = {};
 
       // Preencher o mapa com os horários no intervalo
-      while (horaInicio.isBefore(horaFim)) {
+      /*while (horaInicio.isBefore(horaFim)) {
         String horaAtual = DateFormat.Hm().format(horaInicio);
         horariosNoIntervalo[horaAtual] = true;
         horaInicio = horaInicio.add(
             const Duration(minutes: 10)); // Assumindo intervalos de 10 minutos
-      }
+      }*/
 
       // Atualizar o documento no Firestore
       Map<String, dynamic>? horariosDoDia =
           (await userDocument.get()).data() as Map<String, dynamic>?;
       if (horariosDoDia != null && horariosDoDia.containsKey(dataFormatada)) {
-        // Remover os horários no intervalo posterior ao horário selecionado
-        horariosNoIntervalo.forEach((hora, _) {
-          horariosDoDia[dataFormatada]!.remove(hora);
+        // Atualizar o campo 'pendente' dos horários no intervalo posterior
+        horariosDoDia[dataFormatada]!.forEach((hora, horarioData) {
+          DateTime horaDt = DateFormat.Hm().parse(hora);
+          if (horaDt.isAfter(horaInicio) && horaDt.isBefore(horaFim)) {
+            horariosDoDia[dataFormatada]![hora]['agendado'] = true;
+          }
         });
 
         updateData = horariosDoDia;

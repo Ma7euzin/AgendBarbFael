@@ -3,10 +3,10 @@
 import 'package:agendfael/views/login_view/login_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../../consts/consts.dart';
+import '../../consts/consts.dart';
 
-class TelaPerfilBarb extends StatelessWidget {
-  TelaPerfilBarb({super.key});
+class TelaPerfil extends StatelessWidget {
+  TelaPerfil({super.key});
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
